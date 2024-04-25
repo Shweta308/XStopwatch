@@ -1,3 +1,4 @@
+// Stopwatch.js
 import React, { useState, useRef } from "react";
 
 function Stopwatch() {
