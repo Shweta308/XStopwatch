@@ -1,54 +1,58 @@
-// Stopwatch.js
-import React, { useState, useRef } from "react";
+import "./App.css";
+import React, { useState, useEffect } from "react";
 
-function Stopwatch() {
+const Stopwatch = () => {
   const [isRunning, setIsRunning] = useState(false);
   const [time, setTime] = useState(0);
-  const intervalRef = useRef(null);
 
-  // Function to start or stop the stopwatch
-  const startStopwatch = () => {
-    if (!isRunning) {
-      // Start the stopwatch
-      intervalRef.current = setInterval(() => {
+  useEffect(() => {
+    let timer;
+    if (isRunning) {
+      timer = setInterval(() => {
         setTime((prevTime) => prevTime + 1);
       }, 1000);
     } else {
-      // Stop the stopwatch
-      clearInterval(intervalRef.current);
+      clearInterval(timer);
     }
-    // Toggle the running state
-    setIsRunning(!isRunning);
+    return () => clearInterval(timer);
+  }, [isRunning]);
+
+  const startStopwatch = () => {
+    setIsRunning(true);
   };
 
-  // Function to reset the stopwatch
-  const resetStopwatch = () => {
-    clearInterval(intervalRef.current);
+  const stopStopwatch = () => {
     setIsRunning(false);
-    setTime(0);
   };
 
-  // Function to format the time in MM:SS format
+  const resetStopwatch = () => {
+    setTime(0);
+    setIsRunning(false);
+  };
+
   const formatTime = () => {
-    const minutes = Math.floor(time / 60).toString().padStart(2, "0");
+    const minutes = Math.floor(time / 60)
+      .toString()
+      .padStart(1, "0");
     const seconds = (time % 60).toString().padStart(2, "0");
     return `${minutes}:${seconds}`;
   };
 
   return (
     <div className="stopwatch">
-      <h1>Stopwatch</h1>
+      <h2>Stopwatch</h2>
       <div className="time">Time: {formatTime()}</div>
+
       <div className="buttons">
-        {!isRunning ? (
-          <button onClick={startStopwatch}>Start</button>
+        {isRunning ? (
+          <button onClick={stopStopwatch}>Stop</button>
         ) : (
-          <button onClick={startStopwatch}>Stop</button>
+          <button onClick={startStopwatch}>Start</button>
         )}
         <button onClick={resetStopwatch}>Reset</button>
       </div>
     </div>
   );
-}
+};
 
 export default Stopwatch;
