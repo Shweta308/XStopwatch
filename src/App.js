@@ -1,10 +1,17 @@
-import './App.css';
+import React, { useState, useRef, useEffect } from "react";
+import "./App.css";
 
-import React, { useState, useRef } from "react";
 function Stopwatch() {
   const [isRunning, setIsRunning] = useState(false);
   const [time, setTime] = useState(0);
   const intervalRef = useRef(null);
+
+  // Cleanup interval when component unmounts
+  useEffect(() => {
+    return () => {
+      clearInterval(intervalRef.current);
+    };
+  }, []);
 
   const startStopwatch = () => {
     if (!isRunning) {
@@ -15,6 +22,11 @@ function Stopwatch() {
       clearInterval(intervalRef.current);
     }
     setIsRunning(!isRunning);
+  };
+
+  const stopStopwatch = () => {
+    clearInterval(intervalRef.current);
+    setIsRunning(false);
   };
 
   const resetStopwatch = () => {
@@ -39,7 +51,7 @@ function Stopwatch() {
         {!isRunning ? (
           <button onClick={startStopwatch}>Start</button>
         ) : (
-          <button onClick={startStopwatch}>Stop</button>
+          <button onClick={stopStopwatch}>Stop</button>
         )}
         <button onClick={resetStopwatch}>Reset</button>
       </div>
