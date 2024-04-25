@@ -1,19 +1,11 @@
 .stopwatch {
-  text-align: center;
+  text-align: left;
 }
 
 .time {
-  font-size: 48px;
   margin-bottom: 20px;
 }
 
-.buttons button {
-  font-size: 16px;
-  margin: 0 10px;
-  padding: 10px 20px;
-  cursor: pointer;
-}
-
-.buttons button:hover {
-  background-color: #ddd;
+.button-container {
+  margin-top: 20px;
 }
